@@ -26,6 +26,12 @@ Route::group(['prefix' => 'allegro'], function () {
         'uses' => 'Allegro\AllegroController@getAuthorizationToken',
         'as'   => 'allegro.token'
     ]);
+
+    Route::get('/offers', [
+            'uses' => 'Allegro\AllegroController@getOffers',
+            'as'   => 'allegro.offers'
+        ]
+    );
 });
 
 Route::controllers([

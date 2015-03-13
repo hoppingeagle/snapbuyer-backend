@@ -1,5 +1,6 @@
 <?php namespace Snapbuyer\Http\Controllers\Allegro;
 
+use GuzzleHttp\Stream\Stream;
 use Snapbuyer\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 
@@ -38,10 +39,52 @@ class AllegroController extends Controller
 
         $response = $client->send($request);
 
-        $body = $response->json();
+        $body  = $response->json();
         $token = $body['access_token'];
 
         return $token;
+    }
+
+    public function getOffers()
+    {
+        $token = $this->getAuthorizationToken();
+
+        $client = new Client;
+        $client->setDefaultOption('verify', false);
+
+        $method = 'POST';
+        $url    = 'https://api.natelefon.pl/v2/allegro/offers';
+
+        $request = $client->createRequest($method, $url);
+        $request->addHeader('Content-Type', "application/json");
+        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->setBody(Stream::factory('{
+            "searchString": "Pokemon",
+            "limit": 10
+        }'));
+
+        $query = $request->getQuery();
+        $query->add('access_token', $token);
+
+        $response = $client->send($request);
+
+        $body = $response->json();
+
+        $rawOffers = $body['offers'];
+
+        $offers = [];
+
+        foreach ($rawOffers as $offer) {
+            $newOffer = [
+                'id'        => $offer['id'],
+                'name'      => $offer['name'],
+                'offer_url' => $offer['source']['url'],
+                'image_url' => $offer['mainImage']['large'],
+            ];
+            $offers[] = $newOffer;
+        }
+
+        return $offers;
     }
 
     private function randomItems($number)
