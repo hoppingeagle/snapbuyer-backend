@@ -15,7 +15,15 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
+Route::group(['prefix' => 'allegro'], function () {
+
+    Route::get('/list', [
+        'uses' => 'Allegro\AllegroController@index',
+        'as'   => 'allegro.list'
+    ]);
+});
+
 Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+    'auth'     => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
 ]);
