@@ -1,4 +1,4 @@
-<?php namespace App\Events;
+<?php namespace Snapbuyer\Events;
 
 abstract class Event {
 

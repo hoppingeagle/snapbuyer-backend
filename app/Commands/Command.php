@@ -1,4 +1,4 @@
-<?php namespace App\Commands;
+<?php namespace Snapbuyer\Commands;
 
 abstract class Command {
 

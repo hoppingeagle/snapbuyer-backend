@@ -1,6 +1,6 @@
-<?php namespace App\Services;
+<?php namespace Snapbuyer\Services;
 
-use App\User;
+use Snapbuyer\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
