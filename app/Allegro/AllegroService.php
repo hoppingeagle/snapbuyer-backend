@@ -224,7 +224,7 @@ class AllegroService
         $request->setBody(Stream::factory('{
             "category": ' . $category . ',
             "limit": 1,
-            "offset": '. rand(1,100).'
+            "offset": '.rand(1,1000).'
         }'));
 
         $query = $request->getQuery();
