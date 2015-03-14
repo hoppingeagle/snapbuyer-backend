@@ -37,6 +37,13 @@ class AllegroController extends Controller
 
         return $offers;
     }
+    public function getOffersWithPreference()
+    {
+
+        $offers = $this->allegroService->getOffersWithPreferences();
+
+        return $offers;
+    }
 
     public function getCategories()
     {

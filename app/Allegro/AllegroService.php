@@ -5,6 +5,8 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use GuzzleHttp\Stream\Stream;
+use Illuminate\Support\Facades\Log;
+use Snapbuyer\Category;
 
 
 /**
@@ -124,6 +126,24 @@ class AllegroService
         return $offers;
     }
 
+    public function getOffersWithPreferences()
+    {
+
+        $offers = [];
+        $categories = Category::all();
+        $categories->sortByDesc('weight');
+
+        $preferedCategories = $categories->take(10);
+
+        foreach ($preferedCategories as $category)
+        {
+            Log::info($category['category_id']);
+            $offers[] = $this->getOfferFromCategory($category['category_id']);
+        }
+
+        return $offers;
+    }
+
     public function placeholderItems($number)
     {
         $items = [];
@@ -158,6 +178,41 @@ class AllegroService
         $request->setBody(Stream::factory('{
             "category": ' . $category . ',
             "limit": 1
+        }'));
+
+        $query = $request->getQuery();
+        $query->add('access_token', $token);
+
+        $response = $this->client->send($request);
+
+        $body = $response->json();
+
+        $rawOffer = $body['offers'][0];
+
+        $offer    = [
+            'id'        => $rawOffer['id'],
+            'name'      => $rawOffer['name'],
+            'offer_url' => $rawOffer['source']['url'],
+            'image_url' => $rawOffer['mainImage']['large'],
+            'category_id'=> $category
+        ];
+
+        return $offer;
+    }
+    private function getRandomOfferFromCategory($category)
+    {
+        $token = $this->getToken();
+
+        $method = 'POST';
+        $url    = 'https://api.natelefon.pl/v2/allegro/offers';
+
+        $request = $this->client->createRequest($method, $url);
+        $request->addHeader('Content-Type', "application/json");
+        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->setBody(Stream::factory('{
+            "category": ' . $category . ',
+            "limit": 1,
+            "offset": '. rand(1,100).'
         }'));
 
         $query = $request->getQuery();

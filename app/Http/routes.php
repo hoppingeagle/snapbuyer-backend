@@ -31,7 +31,13 @@ Route::group(['prefix' => 'allegro'], function () {
             'uses' => 'Allegro\AllegroController@getRandomOffers',
             'as'   => 'allegro.offers'
         ]
-    )->before('cache.fetch')->after('cache.put');
+    );
+
+    Route::get('/preferedoffers', [
+            'uses' => 'Allegro\AllegroController@getOffersWithPreference',
+            'as'   => 'allegro.prefered.offers'
+        ]
+    );
 
     Route::get('/categories', [
             'uses' => 'Allegro\AllegroController@getCategories',
