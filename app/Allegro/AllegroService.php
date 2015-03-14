@@ -102,10 +102,11 @@ class AllegroService
 
     public function getRandomOffers()
     {
+        $cach_id = rand(1,10);
 
-        if (Cache::has('offers'))
+        if (Cache::has('offers'.$cach_id))
         {
-            $offers = Cache::get('offers');
+            $offers = Cache::get('offers'.$cach_id);
 
             return $offers;
         }
@@ -121,16 +122,17 @@ class AllegroService
 
         $expiresAt = Carbon::now()->addMinutes(10);
 
-        Cache::put('offers', $offers, $expiresAt);
+        Cache::put('offers'.$cach_id, $offers, $expiresAt);
 
         return $offers;
     }
 
     public function getOffersWithPreferences()
     {
-        if (Cache::has('offersWithPreferences'))
+        $cache_id = rand(1,10);
+        if (Cache::has('offersWithPreferences'.$cache_id))
         {
-            $offers = Cache::get('offersWithPreferences');
+            $offers = Cache::get('offersWithPreferences'.$cache_id);
 
             return $offers;
         }
@@ -149,7 +151,7 @@ class AllegroService
 
         $expiresAt = Carbon::now()->addMinutes(10);
 
-        Cache::put('offersWithPreferences', $offers, $expiresAt);
+        Cache::put('offersWithPreferences'.$cache_id, $offers, $expiresAt);
 
         return $offers;
     }
