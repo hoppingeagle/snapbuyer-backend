@@ -33,7 +33,7 @@ Route::group(['prefix' => 'allegro'], function () {
         ]
     );
 
-    Route::get('/preferedoffers', [
+    Route::get('/preferredoffers', [
             'uses' => 'Allegro\AllegroController@getOffersWithPreference',
             'as'   => 'allegro.prefered.offers'
         ]
