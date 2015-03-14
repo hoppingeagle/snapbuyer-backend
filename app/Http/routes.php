@@ -51,7 +51,7 @@ Route::group(['prefix' => 'allegro'], function () {
         ]
     );
 
-    Route::get('/categories/preferences/store', [
+    Route::any('/categories/preferences/store', [
             'uses' => 'PreferencesController@store',
             'as'   => 'categories.preferences.store'
         ]

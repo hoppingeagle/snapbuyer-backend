@@ -19,15 +19,20 @@ class PreferencesController extends Controller
     public function store()
     {
         $categoriesPreferences = Input::get('preferences');
+        Log::info($categoriesPreferences);
 
 
         $categories = Category::all();
 
 
         foreach ($categories as $category) {
-            $cat = Category::find($category->category_id);
+            $cat = Category::find($category->id);
 
-            $newWeight = $cat->weight + $categoriesPreferences[$category->category_id - 1][$category->category_id];
+            Log::info($cat->weight);
+            Log::info($category->category_id);
+            Log::info($categoriesPreferences[$category->category_id]);
+
+            $newWeight = $cat->weight + $categoriesPreferences[$category->category_id];
             $cat->weight = $newWeight;
             $cat->save();
         }
