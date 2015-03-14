@@ -1,9 +1,5 @@
 <?php namespace Snapbuyer\Http\Controllers\Allegro;
 
-use Carbon\Carbon;
-use GuzzleHttp\Client;
-use GuzzleHttp\Stream\Stream;
-use Illuminate\Support\Facades\Cache;
 use Snapbuyer\Allegro\AllegroService;
 use Snapbuyer\Http\Controllers\Controller;
 
