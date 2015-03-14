@@ -37,6 +37,15 @@ class AllegroController extends Controller
 
         return $offers;
     }
+
+    public function createOffersWithPreferenceCache()
+    {
+
+        $this->allegroService->createOffersWithPreferencesCache();
+
+        return 'Cache updated';
+    }
+
     public function getOffersWithPreference()
     {
 

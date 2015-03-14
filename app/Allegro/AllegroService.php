@@ -156,6 +156,26 @@ class AllegroService
         return $offers;
     }
 
+    public function createOffersWithPreferencesCache()
+    {
+        for ($cache_id = 1; $cache_id <= 10; $cache_id++) {
+            $offers = [];
+            $categories = Category::all();
+            $categories->sortByDesc('weight');
+
+            $preferredCategories = $categories->take(20);
+
+            foreach ($preferredCategories as $category)
+            {
+                $offers[] = $this->getRandomOfferFromCategory(($category['category_id']));
+            }
+
+            $expiresAt = Carbon::now()->addMinutes(10);
+
+            Cache::put('offersWithPreferences'.$cache_id, $offers, $expiresAt);
+        }
+    }
+
     public function placeholderItems($number)
     {
         $items = [];
@@ -224,7 +244,7 @@ class AllegroService
         $request->setBody(Stream::factory('{
             "category": ' . $category . ',
             "limit": 1,
-            "offset": '.rand(1,1000).'
+            "offset": '.rand(1,200).'
         }'));
 
         $query = $request->getQuery();

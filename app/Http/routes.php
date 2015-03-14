@@ -39,6 +39,12 @@ Route::group(['prefix' => 'allegro'], function () {
         ]
     );
 
+    Route::get('/populatecache', [
+            'uses' => 'Allegro\AllegroController@createOffersWithPreferenceCache',
+            'as'   => 'allegro.prefered.offers.cache'
+        ]
+    );
+
     Route::get('/categories', [
             'uses' => 'Allegro\AllegroController@getCategories',
             'as'   => 'allegro.categories'
