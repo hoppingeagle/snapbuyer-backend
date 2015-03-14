@@ -26,15 +26,18 @@ class PreferencesController extends Controller
 
 
         foreach ($categories as $category) {
-            $cat = Category::find($category->id);
+            if (isset($categoriesPreferences[$category->category_id]))
+            {
+                $cat = Category::find($category->id);
 
-            Log::info($cat->weight);
-            Log::info($category->category_id);
-            Log::info($categoriesPreferences[$category->category_id]);
+                Log::info($cat->weight);
+                Log::info($category->category_id);
+                Log::info($categoriesPreferences[$category->category_id]);
 
-            $newWeight = $cat->weight + $categoriesPreferences[$category->category_id];
-            $cat->weight = $newWeight;
-            $cat->save();
+                $newWeight = $cat->weight + $categoriesPreferences[$category->category_id];
+                $cat->weight = $newWeight;
+                $cat->save();
+            }
         }
 
         return response()->json('Categories stored');
