@@ -133,12 +133,12 @@ class AllegroService
         $categories = Category::all();
         $categories->sortByDesc('weight');
 
-        $preferedCategories = $categories->take(10);
+        $preferredCategories = $categories->take(10);
 
-        foreach ($preferedCategories as $category)
+        foreach ($preferredCategories as $category)
         {
             Log::info($category['category_id']);
-            $offers[] = $this->getOfferFromCategory($category['category_id']);
+            $offers[] = $this->getRandomOfferFromCategory(($category['category_id']));
         }
 
         return $offers;
