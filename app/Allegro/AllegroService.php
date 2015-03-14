@@ -94,7 +94,7 @@ class AllegroService
 
         $categories = $response->json();
 
-        $expiresAt = Carbon::now()->addMinutes(10);
+        $expiresAt = Carbon::now()->addMinutes(60);
         Cache::put('categories', $categories, $expiresAt);
 
         return $categories;
@@ -128,18 +128,28 @@ class AllegroService
 
     public function getOffersWithPreferences()
     {
+        if (Cache::has('offersWithPreferences'))
+        {
+            $offers = Cache::get('offersWithPreferences');
+
+            return $offers;
+        }
 
         $offers = [];
         $categories = Category::all();
         $categories->sortByDesc('weight');
 
-        $preferredCategories = $categories->take(10);
+        $preferredCategories = $categories->take(20);
 
         foreach ($preferredCategories as $category)
         {
             Log::info($category['category_id']);
             $offers[] = $this->getRandomOfferFromCategory(($category['category_id']));
         }
+
+        $expiresAt = Carbon::now()->addMinutes(10);
+
+        Cache::put('offersWithPreferences', $offers, $expiresAt);
 
         return $offers;
     }
