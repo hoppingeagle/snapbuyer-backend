@@ -44,6 +44,12 @@ Route::group(['prefix' => 'allegro'], function () {
             'as'   => 'allegro.categories.offer'
         ]
     );
+
+    Route::get('/categories/preferences/store', [
+            'uses' => 'PreferencesController@store',
+            'as'   => 'categories.preferences.store'
+        ]
+    );
 });
 
 Route::controllers([
