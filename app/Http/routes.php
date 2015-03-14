@@ -28,8 +28,20 @@ Route::group(['prefix' => 'allegro'], function () {
     ]);
 
     Route::get('/offers', [
-            'uses' => 'Allegro\AllegroController@getOffers',
+            'uses' => 'Allegro\AllegroController@getRandomOffers',
             'as'   => 'allegro.offers'
+        ]
+    )->before('cache.fetch')->after('cache.put');
+
+    Route::get('/categories', [
+            'uses' => 'Allegro\AllegroController@getCategories',
+            'as'   => 'allegro.categories'
+        ]
+    );
+
+    Route::get('/categories/{id}/offer', [
+            'uses' => 'Allegro\AllegroController@getOfferFromCategory',
+            'as'   => 'allegro.categories.offer'
         ]
     );
 });

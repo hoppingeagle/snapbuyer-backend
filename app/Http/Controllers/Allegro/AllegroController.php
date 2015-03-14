@@ -1,6 +1,8 @@
 <?php namespace Snapbuyer\Http\Controllers\Allegro;
 
+use Carbon\Carbon;
 use GuzzleHttp\Stream\Stream;
+use Illuminate\Support\Facades\Cache;
 use Snapbuyer\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 
@@ -59,7 +61,7 @@ class AllegroController extends Controller
         $request->addHeader('Content-Type', "application/json");
         $request->addHeader('Authorization', "Bearer " . $token);
         $request->setBody(Stream::factory('{
-            "searchString": "Pokemon",
+            "category": 1,
             "limit": 10
         }'));
 
@@ -71,6 +73,7 @@ class AllegroController extends Controller
         $body = $response->json();
 
         $rawOffers = $body['offers'];
+        dd($rawOffers);
 
         $offers = [];
 
@@ -85,6 +88,95 @@ class AllegroController extends Controller
         }
 
         return $offers;
+    }
+
+    public function getRandomOffers()
+    {
+
+        if (Cache::has('offers'))
+        {
+            $offers = Cache::get('offers');
+
+            return $offers;
+        }
+
+        $offers = [];
+        $categories = $this->getCategories();
+
+
+        foreach ($categories['categories'] as $category)
+        {
+            $offers[] = $this->getOfferFromCategory($category['id']);
+        }
+
+        $expiresAt = Carbon::now()->addMinutes(10);
+
+        Cache::put('offers', $offers, $expiresAt);
+
+        return $offers;
+    }
+
+    public function getOfferFromCategory($category)
+    {
+        $token = $this->getAuthorizationToken();
+
+        $client = new Client;
+        $client->setDefaultOption('verify', false);
+
+        $method = 'POST';
+        $url    = 'https://api.natelefon.pl/v2/allegro/offers';
+
+        $request = $client->createRequest($method, $url);
+        $request->addHeader('Content-Type', "application/json");
+        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->setBody(Stream::factory('{
+            "category": ' . $category . ',
+            "limit": 1
+        }'));
+
+        $query = $request->getQuery();
+        $query->add('access_token', $token);
+
+        $response = $client->send($request);
+
+        $body = $response->json();
+
+        $rawOffer = $body['offers'][0];
+
+        $offer    = [
+            'id'        => $rawOffer['id'],
+            'name'      => $rawOffer['name'],
+            'offer_url' => $rawOffer['source']['url'],
+            'image_url' => $rawOffer['mainImage']['large'],
+            'category_id'=> $category
+        ];
+
+        return $offer;
+    }
+
+    public function getCategories()
+    {
+        $token = $this->getAuthorizationToken();
+
+        $client = new Client;
+        $client->setDefaultOption('verify', false);
+
+        $method = 'GET';
+        $url    = 'https://api.natelefon.pl/v1/allegro/categories';
+
+        $request = $client->createRequest($method, $url);
+        $request->addHeader('Content-Type', "application/json");
+        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->setBody(Stream::factory('{}'));
+
+        $query = $request->getQuery();
+        $query->add('access_token', $token);
+
+        $response = $client->send($request);
+
+        $categories = $response->json();
+
+        return $categories;
     }
 
     private function randomItems($number)
