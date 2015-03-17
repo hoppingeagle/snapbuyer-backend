@@ -22,7 +22,7 @@ Route::group(['prefix' => 'allegro'], function () {
         'as'   => 'allegro.list'
     ]);
 
-    Route::get('/token', [
+    Route::get('/token', ['middleware' => 'debug',
         'uses' => 'Allegro\AllegroController@getAuthorizationToken',
         'as'   => 'allegro.token'
     ]);

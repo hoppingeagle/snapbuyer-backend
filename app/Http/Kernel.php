@@ -15,7 +15,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-//		'Snapbuyer\Http\Middleware\VerifyCsrfToken',
+//		'Snapbuyer\Http\Middleware\VerifyCsrfToken'
 	];
 
 	/**
@@ -27,6 +27,7 @@ class Kernel extends HttpKernel {
 		'auth' => 'Snapbuyer\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'Snapbuyer\Http\Middleware\RedirectIfAuthenticated',
+        'debug' => 'Snapbuyer\Http\Middleware\DebugMiddleware'
 	];
 
 }

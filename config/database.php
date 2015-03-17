@@ -57,7 +57,7 @@ return [
 			'host'      => env('DB_HOST', 'localhost'),
 			'database'  => env('DB_DATABASE', 'snapbuyer'),
 			'username'  => env('DB_USERNAME', 'snapbuyer'),
-			'password'  => env('DB_PASSWORD', '66XYMmHT7XmsaSSK'),
+			'password'  => env('DB_PASSWORD', ''),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

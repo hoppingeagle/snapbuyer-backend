@@ -1,9 +1,5 @@
 <?php namespace Snapbuyer\Http\Controllers\Allegro;
 
-use Carbon\Carbon;
-use GuzzleHttp\Client;
-use GuzzleHttp\Stream\Stream;
-use Illuminate\Support\Facades\Cache;
 use Snapbuyer\Allegro\AllegroService;
 use Snapbuyer\Http\Controllers\Controller;
 
@@ -59,6 +55,13 @@ class AllegroController extends Controller
         $categories = $this->allegroService->getCategories();
 
         return $categories;
+    }
+
+    public function getAuthorizationToken()
+    {
+        $token = $this->allegroService->getToken();
+
+        return $token;
     }
 
 }
