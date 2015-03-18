@@ -197,7 +197,7 @@ class AllegroService
         return $items;
     }
 
-    private function getOfferFromCategory($category)
+    public function getOfferFromCategory($category)
     {
         $token = $this->getToken();
 

@@ -50,6 +50,13 @@ class AllegroController extends Controller
         return $offers;
     }
 
+    public function getOfferFromCategory($category_id)
+    {
+        $offer = $this->allegroService->getOfferFromCategory($category_id);
+
+        return $offer;
+    }
+
     public function getCategories()
     {
         $categories = $this->allegroService->getCategories();
