@@ -1,12 +1,10 @@
 <?php namespace Snapbuyer\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Inspiring;
+use Log;
 use Snapbuyer\Allegro\AllegroService;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
-class Inspire extends Command {
+class RefreshCache extends Command {
 
     private $allegroService;
 
