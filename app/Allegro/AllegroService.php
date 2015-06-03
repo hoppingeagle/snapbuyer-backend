@@ -1,11 +1,11 @@
 <?php namespace Snapbuyer\Allegro;
 
+use Cache;
 use Carbon\Carbon;
+use Config;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use GuzzleHttp\Stream\Stream;
-use Illuminate\Support\Facades\Log;
+use Log;
 use Snapbuyer\Category;
 
 
@@ -26,7 +26,7 @@ class AllegroService
 
     private $client;
 
-    function __construct()
+    public function __construct()
     {
         $this->username   = Config::get('allegro.username');
         $this->password   = Config::get('allegro.password');
@@ -52,7 +52,7 @@ class AllegroService
         $url     = $this->base_url.$this->token_path;
 
         $request = $this->client->createRequest($method, $url);
-        $request->addHeader('Authorization', "Basic ".$encodedCredentials);
+        $request->addHeader('Authorization', 'Basic '.$encodedCredentials);
 
         $query = $request->getQuery();
         $query->set('grant_type', 'client_credentials');
@@ -83,8 +83,8 @@ class AllegroService
         $url    = 'https://api.natelefon.pl/v1/allegro/categories';
 
         $request = $this->client->createRequest($method, $url);
-        $request->addHeader('Content-Type', "application/json");
-        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->addHeader('Content-Type', 'application/json');
+        $request->addHeader('Authorization', 'Bearer ' . $token);
         $request->setBody(Stream::factory('{}'));
 
         $query = $request->getQuery();
@@ -205,8 +205,8 @@ class AllegroService
         $url    = 'https://api.natelefon.pl/v2/allegro/offers';
 
         $request = $this->client->createRequest($method, $url);
-        $request->addHeader('Content-Type', "application/json");
-        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->addHeader('Content-Type', 'application/json');
+        $request->addHeader('Authorization', 'Bearer ' . $token);
         $request->setBody(Stream::factory('{
             "category": ' . $category . ',
             "limit": 1
@@ -239,8 +239,8 @@ class AllegroService
         $url    = 'https://api.natelefon.pl/v2/allegro/offers';
 
         $request = $this->client->createRequest($method, $url);
-        $request->addHeader('Content-Type', "application/json");
-        $request->addHeader('Authorization', "Bearer " . $token);
+        $request->addHeader('Content-Type', 'application/json');
+        $request->addHeader('Authorization', 'Bearer ' . $token);
         $request->setBody(Stream::factory('{
             "category": ' . $category . ',
             "limit": 1,
