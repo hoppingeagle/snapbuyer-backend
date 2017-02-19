@@ -13,8 +13,6 @@
 
 Route::get('/', 'IndexController@index');
 
-//Route::get('home', 'HomeController@index');
-
 Route::group(['prefix' => 'allegro'], function () {
 
     Route::get('/list', [
