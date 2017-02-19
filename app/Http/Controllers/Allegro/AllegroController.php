@@ -14,7 +14,7 @@ class AllegroController extends Controller
 
     private $allegroService;
 
-    function __construct()
+    public function __construct()
     {
         $this->allegroService = new AllegroService();
     }
